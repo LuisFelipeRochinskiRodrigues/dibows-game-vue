@@ -1,0 +1,100 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+.game-board{
+    width: 70%; /*larguda da minha tela de jogo*/
+    height: 500px; /*altura da minha tela de jogo*/
+    border: 1px solid #000; /*borda da minha tela de jogo*/
+    margin: 0 auto; /*centraliza a tela no centro do navegador grudando o top em 0*/
+    position: relative; /*os elementos respeitam a delimitacao da tela*/
+    overflow: hidden; /*tudo que sair da tela ele esconde*/
+    background-image: url("./assets/fundo.png");
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+}
+
+.clouds{
+    position: absolute;
+    width: 70%;
+    bottom: 300px;
+    animation: clouds-move 30s infinite linear;
+}
+
+.passaros{
+    position: absolute;
+    width: 10%;
+    bottom: 150px;
+    animation: birds-move 15s infinite linear;
+}
+
+.dibows{
+    position: absolute; /*torna a imagem idependente*/
+    bottom: 0; /*gruda a imagem na borda inferior da tela de jogo*/
+    width: 50px; /*larguda do dibows*/
+    animation: dibows-animation 3s infinite linear;/*animacao esta a keyframe respectiva, com 3s de duracao em looping
+                                                        infinito e animacao de forma linear*/
+}
+
+.ploft{
+    width: 50px;
+    position: absolute;
+    left: 50px;
+    bottom: 0;
+}
+
+.jump{
+    animation: ploft-jump 1s ease-out;
+}
+
+@keyframes clouds-move {
+    from{
+        right: -600px;
+    }
+
+    to{
+        right: 100%;
+    }
+}
+
+@keyframes birds-move {
+    from{
+        right: -600px;
+    }
+
+    to{
+        right: 100%;
+    }
+}
+
+@keyframes dibows-animation {
+    from{
+        right: -50px;
+    }
+
+    to{
+        right: 100%;
+    }
+}
+
+@keyframes ploft-jump {
+    0% {
+        bottom: 0;
+    }
+    40% {
+        bottom: 150px;
+    }
+    50% {
+        bottom: 150px;
+    }
+    60% {
+        bottom: 150px;
+    }
+    100% {
+        bottom: 0;
+    }
+    
+}
