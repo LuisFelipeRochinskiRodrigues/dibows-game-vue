@@ -1,5 +1,5 @@
 <template>
-  <div id="app">
+  <div v-on:space="jump" id="app">
     <div class="container" id="game-board">
         <img src="./assets/nuvens.png" id="clouds">
         <img src="./assets/passaros.png" id="passaros">
@@ -11,41 +11,67 @@
 </template>
 
 <script>
-    const ploft = document.querySelector('.ploft');
-    const dibows = document.querySelector('.dibows');
 
-    const jump = () => {
-        ploft.classList.add('jump');
-        ploft.src = './assets/ploft-hero-pulando.png';
-
-        setTimeout(() => {
-            ploft.classList.remove('jump');
-            ploft.src = './assets/ploft-hero-andando.png';
-        }, 1000);
+    export default{
+        name: 'App',
+        data() {
+            return {
+            isJump: false
+            }
+        },
+        methods: {
+            keydown(key) {
+            if (key.keyCode === 32) {
+                this.jump();
+            }
+            },
+            jump() {
+            this.isJump = true;
+            }
+        },
+        mounted() {
+            document.addEventListener('keydown', this.keydown);
+        },
+        beforeDestroy() {
+            document.removeEventListener('keydown', this.keydown);
+        }
     }
 
-    const loop = setInterval(() => {
-        const dibowsPosition = (dibows).offsetLeft;
-        const ploftPosition = +window.getComputedStyle(ploft).bottom.replace('px','');
+    // const ploft = document.querySelector('.ploft');
+    // const dibows = document.querySelector('.dibows');
+
+    // const jump = () => {
+    //     ploft.classList.add('jump');
+    //     ploft.src = './assets/ploft-hero-pulando.png';
+
+    //     setTimeout(() => {
+    //         ploft.classList.remove('jump');
+    //         ploft.src = './assets/ploft-hero-andando.png';
+    //     }, 1000);
+    // }
+
+    // const loop = setInterval(() => {
+    //     const dibowsPosition = (dibows).offsetLeft;
+    //     const ploftPosition = +window.getComputedStyle(ploft).bottom.replace('px','');
         
-        console.log(ploftPosition)
-        if(dibowsPosition <= 100 && dibowsPosition > 0 && ploftPosition < 80){
+    //     console.log(ploftPosition)
+    //     if(dibowsPosition <= 100 && dibowsPosition > 0 && ploftPosition < 80){
 
-            dibows.style.animation = 'none';
-            dibows.style.left = `${dibowsPosition}px`;
+    //         dibows.style.animation = 'none';
+    //         dibows.style.left = `${dibowsPosition}px`;
 
-            ploft.style.animation = 'none';
-            ploft.style.bottom = `${ploftPosition}px`;
+    //         ploft.style.animation = 'none';
+    //         ploft.style.bottom = `${ploftPosition}px`;
 
-            ploft.src = './assets/dead.png';
-            dibows.src = './assets/dibows-puto.png';
+    //         ploft.src = './assets/dead.png';
+    //         dibows.src = './assets/dibows-puto.png';
 
-            clearInterval(loop);
+    //         clearInterval(loop);
             
-        }
-    }, 10);
+    //     }
+    // }, 10);
 
-    document.addEventListener('keydown', jump);
+    // document.addEventListener('keydown', jump);
 </script>
 
 <style>
