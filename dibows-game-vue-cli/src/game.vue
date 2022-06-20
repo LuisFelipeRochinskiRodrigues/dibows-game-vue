@@ -1,10 +1,61 @@
+<template>
+  <div id="app">
+    <div class="container" id="game-board">
+        <img src="./assets/nuvens.png" id="clouds">
+        <img src="./assets/passaros.png" id="passaros">
+        <img src="./assets/dibows.png" id="dibows">
+        <img src="./assets/ploft-hero-andando.png" class="ploft" id="ploft">
+
+    </div>
+  </div>
+</template>
+
+<script>
+    const ploft = document.querySelector('.ploft');
+    const dibows = document.querySelector('.dibows');
+
+    const jump = () => {
+        ploft.classList.add('jump');
+        ploft.src = './assets/ploft-hero-pulando.png';
+
+        setTimeout(() => {
+            ploft.classList.remove('jump');
+            ploft.src = './assets/ploft-hero-andando.png';
+        }, 1000);
+    }
+
+    const loop = setInterval(() => {
+        const dibowsPosition = (dibows).offsetLeft;
+        const ploftPosition = +window.getComputedStyle(ploft).bottom.replace('px','');
+        
+        console.log(ploftPosition)
+        if(dibowsPosition <= 100 && dibowsPosition > 0 && ploftPosition < 80){
+
+            dibows.style.animation = 'none';
+            dibows.style.left = `${dibowsPosition}px`;
+
+            ploft.style.animation = 'none';
+            ploft.style.bottom = `${ploftPosition}px`;
+
+            ploft.src = './assets/dead.png';
+            dibows.src = './assets/dibows-puto.png';
+
+            clearInterval(loop);
+            
+        }
+    }, 10);
+
+    document.addEventListener('keydown', jump);
+</script>
+
+<style>
 *{
     margin: 0;
     padding: 0;
     box-sizing: border-box;
 }
 
-.game-board{
+#game-board{
     width: 70%; /*larguda da minha tela de jogo*/
     height: 500px; /*altura da minha tela de jogo*/
     border: 1px solid #000; /*borda da minha tela de jogo*/
@@ -17,21 +68,21 @@
     background-position: center;
 }
 
-.clouds{
+#clouds{
     position: absolute;
     width: 70%;
     bottom: 300px;
     animation: clouds-move 30s infinite linear;
 }
 
-.passaros{
+#passaros{
     position: absolute;
     width: 10%;
     bottom: 150px;
     animation: birds-move 15s infinite linear;
 }
 
-.dibows{
+#dibows{
     position: absolute; /*torna a imagem idependente*/
     bottom: 0; /*gruda a imagem na borda inferior da tela de jogo*/
     width: 50px; /*larguda do dibows*/
@@ -39,7 +90,7 @@
                                                         infinito e animacao de forma linear*/
 }
 
-.ploft{
+#ploft{
     width: 50px;
     position: absolute;
     left: 50px;
@@ -98,3 +149,4 @@
     }
     
 }
+</style>
