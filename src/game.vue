@@ -1,77 +1,108 @@
 <template>
-  <div v-on:space="jump" id="app">
+  <div id="app">
     <div class="container" id="game-board">
-        <img src="./assets/nuvens.png" id="clouds">
-        <img src="./assets/passaros.png" id="passaros">
-        <img src="./assets/dibows.png" id="dibows">
-        <img src="./assets/ploft-hero-andando.png" class="ploft" id="ploft">
-
+        <img src="./assets/nuvens.png" id="clouds"/>
+        <img src="./assets/passaros.png" id="passaros"/>
+        <img ref="dibows" :src="imgDibows" id="dibows"/> //put ':' at front of variable to made dinamic
+        <img ref="ploft" :class="{'jump': isJump}" :src="imgploft" id="ploft" class="ploft" /> //put ':' at front of variable to made dinamic
     </div>
+
+    <pre>
+
+
+        'pre' made a dbug screen to see the elements changing
+
+        Press 'R' to restart
+
+        this is jump: {{isJump}}
+
+        this is img ploft: {{imgploft}}
+
+        this is img dibows: {{imgDibows}}
+
+        this is the end: {{isDead}}
+    </pre>
   </div>
 </template>
 
 <script>
-
     export default{
         name: 'App',
         data() {
             return {
-            isJump: false
+                // to made our elements dinamic, we need to put the assets at public path to.
+
+                isJump: false, //jump event start false
+                isDead: false,  // dead event start false
+                imgploft: './assets/ploft-hero-andando.png', //maded img a variable
+
+                imgploftAndando: './assets/ploft-hero-andando.png', //maded img a variable
+                imgploftPulando: './assets/ploft-hero-pulando.png', //maded img a variable
+                imgploftDie: './assets/dead.png', //maded img a variable
+
+
+                imgDibows: './assets/dibows.png', //maded img a variable
+
+                imgDibowsAndando: './assets/dibows.png', //maded img a variable
+                imgDibowsPuto: './assets/dibows-puto.png', //maded img a variable
             }
         },
         methods: {
+            reset() {
+                window.location.reload(); //restart variable
+            },
             keydown(key) {
-            if (key.keyCode === 32) {
-                this.jump();
-            }
+                if (key.key === " ") { //looking for key space, if this key was pressed, we call jump
+                    this.jump();
+                }
+
+                if (key.key === 'r') { //looking for key r, if this key was pressed, we call reset 
+                    this.reset();
+                }
             },
             jump() {
-            this.isJump = true;
+                if (this.isDead) return; // if isdead = true, we stop the game.
+
+                this.isJump = true; //changing isjump to true
+                this.imgploft = this.imgploftPulando; //changing imgploft to jumping
+
+                setTimeout(() => { //after 1 second, we need to back together 
+                    this.isJump = false; //set is jump false
+                    this.imgploft = this.imgploftAndando; //set img ploft walking again
+                }, 1000);
+            },
+            check() {
+                const loop = setInterval(() => {
+                    const dibowsPosition = parseFloat(this.$refs.dibows.offsetLeft); //we used parsefloat to made this refs a number variable
+                    const ploftPosition = parseFloat(window.getComputedStyle(this.$refs.ploft).bottom.replace('px','')); // we used $ to check our html element
+                        
+                    if(dibowsPosition <= 100 && dibowsPosition > 0 && ploftPosition < 80){ // conditions to end game
+                        this.isDead = true;
+
+                        this.$refs.dibows.style.animation = 'none';
+                        this.$refs.dibows.style.left = `${dibowsPosition}px`;
+
+                        this.imgDibows = this.imgDibowsPuto;
+
+                        this.$refs.ploft.style.animation = 'none';
+                        this.$refs.ploft.style.bottom = `${ploftPosition}px`;
+
+                        this.imgploft = this.imgploftDie;
+                        
+                        clearInterval(loop); // if dead = true we need to stop the looping.
+                    }
+
+                }, 10); // this check looping need to run faster, cas we need to check this events to set end game.
             }
         },
         mounted() {
-            document.addEventListener('keydown', this.keydown);
+            document.addEventListener('keydown', this.keydown); //listener to key event
+            this.check();
         },
         beforeDestroy() {
-            document.removeEventListener('keydown', this.keydown);
+            document.removeEventListener('keydown', this.keydown); //back up
         }
     }
-
-    // const ploft = document.querySelector('.ploft');
-    // const dibows = document.querySelector('.dibows');
-
-    // const jump = () => {
-    //     ploft.classList.add('jump');
-    //     ploft.src = './assets/ploft-hero-pulando.png';
-
-    //     setTimeout(() => {
-    //         ploft.classList.remove('jump');
-    //         ploft.src = './assets/ploft-hero-andando.png';
-    //     }, 1000);
-    // }
-
-    // const loop = setInterval(() => {
-    //     const dibowsPosition = (dibows).offsetLeft;
-    //     const ploftPosition = +window.getComputedStyle(ploft).bottom.replace('px','');
-        
-    //     console.log(ploftPosition)
-    //     if(dibowsPosition <= 100 && dibowsPosition > 0 && ploftPosition < 80){
-
-    //         dibows.style.animation = 'none';
-    //         dibows.style.left = `${dibowsPosition}px`;
-
-    //         ploft.style.animation = 'none';
-    //         ploft.style.bottom = `${ploftPosition}px`;
-
-    //         ploft.src = './assets/dead.png';
-    //         dibows.src = './assets/dibows-puto.png';
-
-    //         clearInterval(loop);
-            
-    //     }
-    // }, 10);
-
-    // document.addEventListener('keydown', jump);
 </script>
 
 <style>
@@ -112,8 +143,7 @@
     position: absolute; /*torna a imagem idependente*/
     bottom: 0; /*gruda a imagem na borda inferior da tela de jogo*/
     width: 50px; /*larguda do dibows*/
-    animation: dibows-animation 3s infinite linear;/*animacao esta a keyframe respectiva, com 3s de duracao em looping
-                                                        infinito e animacao de forma linear*/
+    animation: dibows-animation 3s infinite linear;/*animacao esta a keyframe respectiva, com 3s de duracao em looping infinito e animacao de forma linear*/
 }
 
 #ploft{
