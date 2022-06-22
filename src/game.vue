@@ -3,8 +3,9 @@
     <div class="container" id="game-board">
         <img src="./assets/nuvens.png" id="clouds"/>
         <img src="./assets/passaros.png" id="passaros"/>
-        <img ref="dibows" :src="imgDibows" id="dibows"/> //put ':' at front of variable to made dinamic
-        <img ref="ploft" :class="{'jump': isJump}" :src="imgploft" id="ploft" class="ploft" /> //put ':' at front of variable to made dinamic
+        <img ref="dibows" :src="imgDibows" id="dibows"/> <!-- put ':' at front of variable to made dinamic -->
+        <img ref="ploft" :class="{'jump': isJump}" :src="imgploft" id="ploft" class="ploft" /> <!-- //put ':' at front of variable to made dinamic -->
+        <img v-if="isgameOver" :src="imggameOver" id="gameover"/> <!-- v-if verify condicional game over to set the img -->
     </div>
 
     <pre>
@@ -31,7 +32,7 @@
         data() {
             return {
                 // to made our elements dinamic, we need to put the assets at public path to.
-
+                isgameOver: false, //at start our game over is false
                 isJump: false, //jump event start false
                 isDead: false,  // dead event start false
                 imgploft: './assets/ploft-hero-andando.png', //maded img a variable
@@ -45,6 +46,10 @@
 
                 imgDibowsAndando: './assets/dibows.png', //maded img a variable
                 imgDibowsPuto: './assets/dibows-puto.png', //maded img a variable
+
+                
+                imggameOver: 'none', // our img is none
+                imgtheend: './assets/game_over_PNG57.png', //maded img a variable
             }
         },
         methods: {
@@ -78,6 +83,7 @@
                         
                     if(dibowsPosition <= 100 && dibowsPosition > 0 && ploftPosition < 80){ // conditions to end game
                         this.isDead = true;
+                        this.isgameOver = true; //set game over true
 
                         this.$refs.dibows.style.animation = 'none';
                         this.$refs.dibows.style.left = `${dibowsPosition}px`;
@@ -87,7 +93,8 @@
                         this.$refs.ploft.style.animation = 'none';
                         this.$refs.ploft.style.bottom = `${ploftPosition}px`;
 
-                        this.imgploft = this.imgploftDie;
+                        this.imgploft = this.imgploftDie,
+                        this.imggameOver = this.imgtheend; // changing the img to new one
                         
                         clearInterval(loop); // if dead = true we need to stop the looping.
                     }
@@ -123,6 +130,13 @@
     background-repeat: no-repeat;
     background-size: cover;
     background-position: center;
+}
+
+#gameover{
+    position: absolute;
+    width: 30%;
+    left: 450px;
+    margin: auto;
 }
 
 #clouds{
