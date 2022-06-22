@@ -5,7 +5,7 @@
         <img src="./assets/passaros.png" id="passaros"/>
         <img ref="dibows" :src="imgDibows" id="dibows"/> <!-- put ':' at front of variable to made dinamic -->
         <img ref="ploft" :class="{'jump': isJump}" :src="imgploft" id="ploft" class="ploft" /> <!-- //put ':' at front of variable to made dinamic -->
-        <img v-if="isgameOver" :src="imggameOver" id="gameover"/> <!-- v-if verify condicional game over to set the img -->
+        <img v-if="isDead" :src="imggameOver" id="gameover"/> <!-- v-if verify condicional game over to set the img -->
     </div>
 
     <pre>
@@ -21,7 +21,7 @@
 
         this is img dibows: {{imgDibows}}
 
-        this is the end: {{isDead}}
+        this is the end: {{isDead}}{{imggameOver}}
     </pre>
   </div>
 </template>
@@ -48,8 +48,7 @@
                 imgDibowsPuto: './assets/dibows-puto.png', //maded img a variable
 
                 
-                imggameOver: 'none', // our img is none
-                imgtheend: './assets/game_over_PNG57.png', //maded img a variable
+                imggameOver: './assets/game_over_PNG57.png', //maded img a variable
             }
         },
         methods: {
@@ -83,7 +82,6 @@
                         
                     if(dibowsPosition <= 100 && dibowsPosition > 0 && ploftPosition < 80){ // conditions to end game
                         this.isDead = true;
-                        this.isgameOver = true; //set game over true
 
                         this.$refs.dibows.style.animation = 'none';
                         this.$refs.dibows.style.left = `${dibowsPosition}px`;
@@ -94,7 +92,6 @@
                         this.$refs.ploft.style.bottom = `${ploftPosition}px`;
 
                         this.imgploft = this.imgploftDie,
-                        this.imggameOver = this.imgtheend; // changing the img to new one
                         
                         clearInterval(loop); // if dead = true we need to stop the looping.
                     }
