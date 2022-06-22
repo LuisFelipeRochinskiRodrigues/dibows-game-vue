@@ -117,22 +117,23 @@
 }
 
 #game-board{
-    width: 70%; /*larguda da minha tela de jogo*/
-    height: 500px; /*altura da minha tela de jogo*/
-    border: 1px solid #000; /*borda da minha tela de jogo*/
-    margin: 0 auto; /*centraliza a tela no centro do navegador grudando o top em 0*/
-    position: relative; /*os elementos respeitam a delimitacao da tela*/
-    overflow: hidden; /*tudo que sair da tela ele esconde*/
+    width: 70%; /*off my game screen*/
+    height: 500px; /*height of my game screen*/
+    border: 1px solid #000; /*edge of my game screen*/
+    margin: 0 auto; /*center the screen in the center of the browser by gluing the top to 0*/
+    position: relative; /*the elements respect the boundaries of the screen*/
+    overflow: hidden; /*everything that comes out of the screen it hides*/
     background-image: url("./assets/fundo.png");
     background-repeat: no-repeat;
     background-size: cover;
     background-position: center;
 }
 
-#gameover{
+#gameover{ /* make the gameover responsive */
     position: absolute;
     width: 30%;
-    left: 450px;
+    top: 0; bottom: 0; 
+    left: 0; right: 0;
     margin: auto;
 }
 
@@ -151,10 +152,10 @@
 }
 
 #dibows{
-    position: absolute; /*torna a imagem idependente*/
-    bottom: 0; /*gruda a imagem na borda inferior da tela de jogo*/
-    width: 50px; /*larguda do dibows*/
-    animation: dibows-animation 3s infinite linear;/*animacao esta a keyframe respectiva, com 3s de duracao em looping infinito e animacao de forma linear*/
+    position: absolute; /*makes the image independent*/
+    bottom: 0; /*sticks the image to the bottom edge of the game screen*/
+    width: 50px;
+    animation: dibows-animation 3s infinite linear;/*animation is the respective keyframe, with 3s duration in infinite looping and linear animation*/
 }
 
 #ploft{
